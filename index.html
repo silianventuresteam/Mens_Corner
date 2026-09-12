@@ -33,7 +33,7 @@
 
         .booking-container { 
             background: #ffffff; 
-            padding: 20px 16px; 
+            padding: 24px 20px; 
             border-radius: 16px; 
             border: 2px solid #000000; 
             width: 100%; 
@@ -107,21 +107,49 @@
             font-size: 14px; 
         }
 
-        /* PREVENTS IOS ZOOM ON FOCUS BY KEEPING INPUT FONT SIZES AT LEAST 16px ON MOBILE DEVICES */
+        /* DEVICE SCREEN BREAKPOINTS & SIZING ADAPTATIONS */
+        
+        /* 1. MOBILE PHONES (Up to 480px) */
         @media screen and (max-width: 480px) {
+            body {
+                padding: 8px;
+                align-items: flex-start;
+            }
+            .booking-container {
+                max-width: 100%;
+                padding: 14px 10px;
+                border-radius: 12px;
+                box-shadow: 2px 2px 0px #000000;
+            }
             input {
-                font-size: 16px; 
+                font-size: 16px; /* Prevents iOS auto-zoom */
                 padding: 11px 12px;
             }
             select {
                 font-size: 12px;
                 padding: 11px 32px 11px 12px;
             }
+        }
+
+        /* 2. TABLETS (481px to 768px) */
+        @media screen and (min-width: 481px) and (max-width: 768px) {
             body {
-                padding: 10px;
+                padding: 20px;
             }
             .booking-container {
-                padding: 16px 12px;
+                max-width: 520px;
+                padding: 24px;
+            }
+        }
+
+        /* 3. LAPTOPS / DESKTOPS (769px and above) */
+        @media screen and (min-width: 769px) {
+            body {
+                padding: 40px;
+            }
+            .booking-container {
+                max-width: 480px;
+                padding: 28px 24px;
             }
         }
 
