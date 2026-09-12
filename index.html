@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EXECUTIVE BARBER BOOKING</title>
+
+    <!-- LOADING SPACE MONO FROM GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* APPLIED BOLD SPACE MONO FONT STYLE AND UPPERCASE TEXT GLOBALLY */
+        html, body, * { 
+            font-family: 'Space Mono', monospace; 
+            font-weight: 700;
+            text-transform: uppercase;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            background-color: #ffffff; 
+            color: #000000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: stretch; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 0;
+        }
+
+        .booking-container { 
+            background: #ffffff; 
+            padding: 24px 20px; 
+            border-radius: 0px; 
+            border: none; 
+            border-left: 2px solid #000000;
+            border-right: 2px solid #000000;
+            width: 100%; 
+            max-width: 650px; 
+            box-shadow: none; 
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 20px;
+            text-align: center;
+            margin: 0 0 20px 0;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 15px;
+        }
+
+        label { 
+            display: block; 
+            margin: 16px 0 6px; 
+            font-size: 12px; 
+            color: #000000; 
+        }
+        
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        select { 
+            display: block; 
+            width: 100%; 
+            padding: 14px 16px; 
+            padding-right: 45px; 
+            border-radius: 12px; 
+            border: 2px solid #000000; 
+            background: #f3f3f1; 
+            color: #000000; 
+            font-size: 14px; 
+            appearance: none; 
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+        }
+
+        .select-wrapper::after {
+            content: "";
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 7px solid #000000; 
+            pointer-events: none; 
+        }
+
+        input { 
+            display: block; 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: 12px; 
+            border: 2px solid #000000; 
+            background: #f3f3f1; 
+            color: #000000; 
+            font-size: 14px; 
+        }
+
+        /* PREVENTS IOS ZOOM ON FOCUS BY KEEPING INPUT FONT SIZES AT LEAST 16px ON MOBILE DEVICES */
+        @media screen and (max-width: 480px) {
+            input, select {
+                font-size: 16px; 
+                padding: 12px 14px;
+            }
+            .booking-container {
+                padding: 16px 14px;
+                border: none; /* Full bleed on tiny screens */
+            }
+        }
+
+        input:focus, select:focus { 
+            background-color: #ffffff;
+            outline: none; 
+        }
+
+        /* CUSTOM CALENDAR STYLING FLUIDLY SCALED */
+        .calendar-box {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 4px;
+            background-color: #f3f3f1;
+            width: 100%;
+        }
+
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .cal-header button {
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .cal-header button:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            text-align: center;
+        }
+
+        .cal-day-name {
+            font-size: 11px;
+            color: #666666;
+            padding-bottom: 6px;
+        }
+
+        .cal-date {
+            padding: 12px 0;
+            font-size: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1;
+        }
+
+        .cal-date:hover:not(.disabled) {
+            border-color: #000000;
+        }
+
+        .cal-date.selected {
+            background: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        .cal-date.disabled {
+            color: #cccccc;
+            background: #f9f9f9;
+            cursor: not-allowed;
+        }
+
+        .cal-date.empty {
+            background: transparent;
+            cursor: default;
+            border: none;
+        }
+        
+        .grid-slots { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px; 
+            margin-top: 4px; 
+        }
+        .slot-btn { 
+            background: #ffffff; 
+            border: 2px solid #000000; 
+            color: #000000; 
+            padding: 14px 12px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 13px; 
+            transition: 0.1s; 
+        }
+        .slot-btn:hover {
+            background-color: #f3f3f1;
+        }
+        
+        .slot-btn.selected { 
+            background-color: #000000 !important; 
+            color: #ffffff !important; 
+        }
+
+        .suggestions-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 2px solid #000000;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            max-height: 180px;
+            overflow-y: auto;
+            z-index: 99999; 
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+            display: none;
+        }
+        .suggestions-box div {
+            padding: 14px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            border-bottom: 1px solid #f3f3f1;
+            color: #000000;
+            background: #ffffff;
+        }
+        .suggestions-box div:hover {
+            background-color: #f3f3f1;
+        }
+
+        .book-btn { 
+            background: #000000; 
+            color: #ffffff; 
+            width: 100%; 
+            padding: 18px; 
+            border: 2px solid #000000; 
+            border-radius: 30px; 
+            margin: 30px 0 20px 0; 
+            font-size: 14px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+        }
+        .book-btn:hover { 
+            background: #222222; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="booking-container">
+    <h1>MEN'S CORNER</h1>
+
+    <label>SELECT SERVICE</label>
+    <div class="select-wrapper">
+        <select id="serviceSelect" onchange="updateButtonPrice()">
+            <option value="1000" data-name="STANDARD MOBILE CUT">STANDARD MOBILE CUT — KES 1,000</option>
+            <option value="2000" data-name="EXECUTIVE MOBILE CUT">EXECUTIVE MOBILE CUT — KES 2,000</option>
+        </select>
+    </div>
+    
+    <label>SELECT DATE</label>
+    <div class="calendar-box">
+        <div class="cal-header">
+            <button type="button" onclick="changeMonth(-1)">&lt;</button>
+            <span id="calMonthYear"></span>
+            <button type="button" onclick="changeMonth(1)">&gt;</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <label>AVAILABLE TIME SLOTS</label>
+    <div class="grid-slots" id="slotsContainer">
+        <button type="button" class="slot-btn" onclick="selectSlot(this, '09:00 AM')">09:00 AM</button>
+        <button type="button" class="slot-btn" onclick="selectSlot(this, '10:00 AM')">10:00 AM</button>
+        <button type="button" class="slot-btn" onclick="selectSlot(this, '11:00 AM')">11:00 AM</button>
+        <button type="button" class="slot-btn" onclick="selectSlot(this, '02:00 PM')">02:00 PM</button>
+        <button type="button" class="slot-btn" onclick="selectSlot(this, '03:00 PM')">03:00 PM</button>
+        <button type="button" class="slot-btn" onclick="selectSlot(this, '04:00 PM')">04:00 PM</button>
+    </div>
+
+    <label>MOMBASA AREA / ESTATE LOCATION</label>
+    <div class="suggestions-wrapper">
+        <input type="text" id="areaInput" placeholder="TYPE YOUR AREA (E.G. NYALI, BAMBURI)" autocomplete="off">
+        <div id="suggestionsBox" class="suggestions-box"></div>
+    </div>
+
+    <label>M-PESA FULL NAME</label>
+    <input type="text" id="fullName" placeholder="E.G. JOHN DOE" autocomplete="off">
+
+    <label>SAFARICOM M-PESA NUMBER</label>
+    <input type="tel" id="phone" placeholder="E.G. 0712345678">
+
+    <button class="book-btn" id="submitButton" onclick="startMpesaBooking()">BOOK & PAY KES 1,000</button>
+</div>
+
+<script>
+    let selectedTime = '';
+    
+    // Calendar state anchored strictly to current system time
+    const today = new Date();
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+    let selectedDateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    const monthsNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+
+    function renderCalendar() {
+        const grid = document.getElementById('calGrid');
+        const monthYearLabel = document.getElementById('calMonthYear');
+        grid.innerHTML = '';
+
+        monthYearLabel.textContent = `${monthsNames[currentMonth]} ${currentYear}`;
+
+        const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+        days.forEach(d => {
+            const div = document.createElement('div');
+            div.className = 'cal-day-name';
+            div.textContent = d;
+            grid.appendChild(div);
+        });
+
+        const firstDayIndex = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7; 
+        const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        for (let i = 0; i < firstDayIndex; i++) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'cal-date empty';
+            grid.appendChild(emptyDiv);
+        }
+
+        for (let day = 1; day <= totalDays; day++) {
+            const dateDiv = document.createElement('div');
+            dateDiv.className = 'cal-date';
+            dateDiv.textContent = day;
+
+            const mFormatted = String(currentMonth + 1).padStart(2, '0');
+            const dFormatted = String(day).padStart(2, '0');
+            const thisDateStr = `${currentYear}-${mFormatted}-${dFormatted}`;
+
+            const currentDateObj = new Date(currentYear, currentMonth, day);
+            const todayObj = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+            if (currentDateObj < todayObj) {
+                dateDiv.classList.add('disabled');
+            } else {
+                if (thisDateStr === selectedDateStr) {
+                    dateDiv.classList.add('selected');
+                }
+                dateDiv.onclick = function() {
+                    selectedDateStr = thisDateStr;
+                    renderCalendar();
+                };
+            }
+            grid.appendChild(dateDiv);
+        }
+    }
+
+    function changeMonth(direction) {
+        currentMonth += direction;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    }
+
+    renderCalendar();
+
+    const mombasaAreas = [
+        "NYALI", "BAMBURI", "KIZINGO", "TUDOR", "MKOMANI", "SHANZU", "MTWAPA BORDER",
+        "CHANGAMWE", "MIKINDANI", "JOMVU", "GANJONI", "MAJENGO", "MWEMBE TAYARI",
+        "LIKONI", "DIANI BORDER", "KONGOWEA", "FRERE TOWN", "KISAUNI", "MTOPANGA",
+        "BOMBOLULU", "VIWANDANI", "MOMBASA ISLAND", "KILINDINI", "MAGONGO"
+    ];
+
+    function selectSlot(element, time) {
+        const buttons = document.querySelectorAll('.slot-btn');
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedTime = time;
+    }
+
+    function updateButtonPrice() {
+        const selectEl = document.getElementById("serviceSelect");
+        const price = selectEl.value;
+        document.getElementById("submitButton").textContent = `BOOK & PAY KES ${Number(price).toLocaleString()}`;
+    }
+
+    const areaInput = document.getElementById("areaInput");
+    const suggestionsBox = document.getElementById("suggestionsBox");
+
+    areaInput.addEventListener("input", function() {
+        areaInput.value = areaInput.value.toUpperCase();
+        
+        const inputVal = areaInput.value.trim().toLowerCase();
+        suggestionsBox.innerHTML = "";
+        
+        if (!inputVal) {
+            suggestionsBox.style.display = "none";
+            return;
+        }
+
+        const matches = mombasaAreas.filter(area => area.toLowerCase().includes(inputVal));
+
+        if (matches.length > 0) {
+            matches.forEach(match => {
+                const row = document.createElement("div");
+                row.textContent = match;
+                
+                row.addEventListener("click", function() {
+                    areaInput.value = match;
+                    suggestionsBox.style.display = "none";
+                });
+                
+                suggestionsBox.appendChild(row);
+            });
+            suggestionsBox.style.display = "block";
+        } else {
+            suggestionsBox.style.display = "none";
+        }
+    });
+
+    const fullNameInput = document.getElementById("fullName");
+    fullNameInput.addEventListener("input", function() {
+        fullNameInput.value = fullNameInput.value.toUpperCase();
+    });
+
+    document.addEventListener("click", function(e) {
+        if (e.target !== areaInput) {
+            suggestionsBox.style.display = "none";
+        }
+    });
+
+    async function startMpesaBooking() {
+        const phone = document.getElementById('phone').value;
+        const selectedArea = areaInput.value;
+        const fullName = fullNameInput.value.trim();
+        
+        const selectEl = document.getElementById("serviceSelect");
+        const selectedPrice = selectEl.value;
+
+        if (!selectedDateStr) {
+            alert('PLEASE SELECT A BOOKING DATE.');
+            return;
+        }
+
+        if (!selectedTime) {
+            alert('PLEASE SELECT AN AVAILABLE TIME SLOT.');
+            return;
+        }
+
+        if (!selectedArea || !mombasaAreas.map(a => a.toLowerCase()).includes(selectedArea.toLowerCase())) {
+            alert('PLEASE SELECT A VALID MOMBASA AREA FROM THE SUGGESTIONS LIST.');
+            return;
+        }
+
+        if (!fullName) {
+            alert('PLEASE ENTER YOUR FULL NAME FOR M-PESA RECORDS.');
+            return;
+        }
+
+        if (!phone || !phone.match(/^(?:254|\+254|0)?(7\d{8}|1\d{8})$/)) {
+            alert('PLEASE ENTER A VALID SAFARICOM PHONE NUMBER (E.G. 0712345678).');
+            return;
+        }
+
+        const serviceName = selectEl.options[selectEl.selectedIndex].getAttribute('data-name');
+
+        const payload = {
+            service: serviceName,
+            amount: selectedPrice,
+            date: selectedDateStr,
+            time: selectedTime,
+            area: selectedArea,
+            name: fullName,
+            phone: phone
+        };
+
+        const submitBtn = document.getElementById('submitButton');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'SENDING STK PUSH...';
+
+        try {
+            const response = await fetch('/api/stk-push', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert('STK PUSH SENT SUCCESSFULLY! CHECK YOUR PHONE TO ENTER YOUR M-PESA PIN.');
+            } else {
+                alert(`PAYMENT INITIATION FAILED: ${result.message || 'PLEASE TRY AGAIN.'}`);
+                submitBtn.disabled = false;
+                updateButtonPrice();
+            }
+        } catch (error) {
+            console.error('Error connecting to payment gateway:', error);
+            alert('NETWORK ERROR. PLEASE CHECK YOUR CONNECTION AND TRY AGAIN.');
+            submitBtn.disabled = false;
+            updateButtonPrice();
+        }
+    }
+</script>
+
+</body>
+</html>
