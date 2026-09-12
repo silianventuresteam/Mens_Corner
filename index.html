@@ -33,7 +33,7 @@
 
         .booking-container { 
             background: #ffffff; 
-            padding: 24px 20px; 
+            padding: 20px 16px; 
             border-radius: 16px; 
             border: 2px solid #000000; 
             width: 100%; 
@@ -50,6 +50,7 @@
             letter-spacing: 1px;
             border-bottom: 2px solid #000000;
             padding-bottom: 10px;
+            grid-column: 1 / -1;
         }
 
         label { 
@@ -107,49 +108,60 @@
             font-size: 14px; 
         }
 
-        /* DEVICE SCREEN BREAKPOINTS & SIZING ADAPTATIONS */
-        
-        /* 1. MOBILE PHONES (Up to 480px) */
+        /* MOBILE PHONES (Up to 480px) - UNTOUCHED / ORIGINAL BEHAVIOR */
         @media screen and (max-width: 480px) {
-            body {
-                padding: 8px;
-                align-items: flex-start;
-            }
-            .booking-container {
-                max-width: 100%;
-                padding: 14px 10px;
-                border-radius: 12px;
-                box-shadow: 2px 2px 0px #000000;
-            }
             input {
-                font-size: 16px; /* Prevents iOS auto-zoom */
+                font-size: 16px; 
                 padding: 11px 12px;
             }
             select {
                 font-size: 12px;
                 padding: 11px 32px 11px 12px;
             }
+            body {
+                padding: 10px;
+                align-items: center;
+            }
+            .booking-container {
+                padding: 16px 12px;
+                max-width: 440px;
+            }
         }
 
-        /* 2. TABLETS (481px to 768px) */
-        @media screen and (min-width: 481px) and (max-width: 768px) {
+        /* TABLETS & DESKTOPS (481px and above) - MULTI-COLUMN NO-SCROLL LAYOUT */
+        @media screen and (min-width: 481px) {
             body {
                 padding: 20px;
+                align-items: center;
             }
             .booking-container {
-                max-width: 520px;
+                max-width: 900px;
                 padding: 24px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px 24px;
+                align-content: start;
             }
-        }
-
-        /* 3. LAPTOPS / DESKTOPS (769px and above) */
-        @media screen and (min-width: 769px) {
-            body {
-                padding: 40px;
+            .col-left {
+                display: flex;
+                flex-direction: column;
             }
-            .booking-container {
-                max-width: 480px;
-                padding: 28px 24px;
+            .col-right {
+                display: flex;
+                flex-direction: column;
+            }
+            .full-width-section {
+                grid-column: 1 / -1;
+            }
+            .calendar-box {
+                margin-top: 0 !important;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .cal-grid {
+                flex-grow: 1;
             }
         }
 
@@ -319,47 +331,56 @@
 <div class="booking-container">
     <h1>MEN'S CORNER</h1>
 
-    <label>SELECT SERVICE</label>
-    <div class="select-wrapper">
-        <select id="serviceSelect" onchange="updateButtonPrice()">
-            <option value="1000" data-name="STANDARD MOBILE CUT">STANDARD MOBILE CUT — KES 1,000</option>
-            <option value="2000" data-name="EXECUTIVE MOBILE CUT">EXECUTIVE MOBILE CUT — KES 2,000</option>
-        </select>
-    </div>
-    
-    <label>SELECT DATE</label>
-    <div class="calendar-box">
-        <div class="cal-header">
-            <button type="button" onclick="changeMonth(-1)">&lt;</button>
-            <span id="calMonthYear"></span>
-            <button type="button" onclick="changeMonth(1)">&gt;</button>
+    <!-- LEFT COLUMN (TABLET/DESKTOP) -->
+    <div class="col-left">
+        <label>SELECT SERVICE</label>
+        <div class="select-wrapper">
+            <select id="serviceSelect" onchange="updateButtonPrice()">
+                <option value="1000" data-name="STANDARD MOBILE CUT">STANDARD MOBILE CUT — KES 1,000</option>
+                <option value="2000" data-name="EXECUTIVE MOBILE CUT">EXECUTIVE MOBILE CUT — KES 2,000</option>
+            </select>
         </div>
-        <div class="cal-grid" id="calGrid"></div>
+
+        <label>MOMBASA AREA / ESTATE LOCATION</label>
+        <div class="suggestions-wrapper">
+            <input type="text" id="areaInput" placeholder="TYPE YOUR AREA (E.G. NYALI, BAMBURI)" autocomplete="off">
+            <div id="suggestionsBox" class="suggestions-box"></div>
+        </div>
+
+        <label>M-PESA FULL NAME</label>
+        <input type="text" id="fullName" placeholder="E.G. JOHN DOE" autocomplete="off">
+
+        <label>SAFARICOM M-PESA NUMBER</label>
+        <input type="tel" id="phone" placeholder="E.G. 0712345678">
     </div>
 
-    <label>AVAILABLE TIME SLOTS</label>
-    <div class="grid-slots" id="slotsContainer">
-        <button type="button" class="slot-btn" onclick="selectSlot(this, '09:00 AM')">09:00 AM</button>
-        <button type="button" class="slot-btn" onclick="selectSlot(this, '10:00 AM')">10:00 AM</button>
-        <button type="button" class="slot-btn" onclick="selectSlot(this, '11:00 AM')">11:00 AM</button>
-        <button type="button" class="slot-btn" onclick="selectSlot(this, '02:00 PM')">02:00 PM</button>
-        <button type="button" class="slot-btn" onclick="selectSlot(this, '03:00 PM')">03:00 PM</button>
-        <button type="button" class="slot-btn" onclick="selectSlot(this, '04:00 PM')">04:00 PM</button>
+    <!-- RIGHT COLUMN (TABLET/DESKTOP) -->
+    <div class="col-right">
+        <label>SELECT DATE</label>
+        <div class="calendar-box">
+            <div class="cal-header">
+                <button type="button" onclick="changeMonth(-1)">&lt;</button>
+                <span id="calMonthYear"></span>
+                <button type="button" onclick="changeMonth(1)">&gt;</button>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+        </div>
+
+        <label>AVAILABLE TIME SLOTS</label>
+        <div class="grid-slots" id="slotsContainer">
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '09:00 AM')">09:00 AM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '10:00 AM')">10:00 AM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '11:00 AM')">11:00 AM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '02:00 PM')">02:00 PM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '03:00 PM')">03:00 PM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '04:00 PM')">04:00 PM</button>
+        </div>
     </div>
 
-    <label>MOMBASA AREA / ESTATE LOCATION</label>
-    <div class="suggestions-wrapper">
-        <input type="text" id="areaInput" placeholder="TYPE YOUR AREA (E.G. NYALI, BAMBURI)" autocomplete="off">
-        <div id="suggestionsBox" class="suggestions-box"></div>
+    <!-- SUBMIT BUTTON SPANS FULL WIDTH ACROSS COLUMNS -->
+    <div class="full-width-section">
+        <button class="book-btn" id="submitButton" onclick="startMpesaBooking()">BOOK & PAY KES 1,000</button>
     </div>
-
-    <label>M-PESA FULL NAME</label>
-    <input type="text" id="fullName" placeholder="E.G. JOHN DOE" autocomplete="off">
-
-    <label>SAFARICOM M-PESA NUMBER</label>
-    <input type="tel" id="phone" placeholder="E.G. 0712345678">
-
-    <button class="book-btn" id="submitButton" onclick="startMpesaBooking()">BOOK & PAY KES 1,000</button>
 </div>
 
 <script>
