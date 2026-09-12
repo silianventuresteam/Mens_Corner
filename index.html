@@ -67,17 +67,19 @@
         select { 
             display: block; 
             width: 100%; 
-            padding: 12px 14px; 
-            padding-right: 40px; 
+            padding: 12px 35px 12px 14px; 
             border-radius: 10px; 
             border: 2px solid #000000; 
             background: #f3f3f1; 
             color: #000000; 
-            font-size: 14px; 
+            font-size: 13px; 
             appearance: none; 
             -webkit-appearance: none;
             -moz-appearance: none;
             cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .select-wrapper::after {
@@ -107,9 +109,13 @@
 
         /* PREVENTS IOS ZOOM ON FOCUS BY KEEPING INPUT FONT SIZES AT LEAST 16px ON MOBILE DEVICES */
         @media screen and (max-width: 480px) {
-            input, select {
+            input {
                 font-size: 16px; 
                 padding: 11px 12px;
+            }
+            select {
+                font-size: 12px;
+                padding: 11px 32px 11px 12px;
             }
             body {
                 padding: 10px;
