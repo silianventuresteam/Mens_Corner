@@ -352,6 +352,16 @@
 
         <label>SAFARICOM M-PESA NUMBER</label>
         <input type="tel" id="phone" placeholder="E.G. 0712345678">
+
+        <label>AVAILABLE TIME SLOTS</label>
+        <div class="grid-slots" id="slotsContainer">
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '09:00 AM')">09:00 AM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '10:00 AM')">10:00 AM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '11:00 AM')">11:00 AM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '02:00 PM')">02:00 PM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '03:00 PM')">03:00 PM</button>
+            <button type="button" class="slot-btn" onclick="selectSlot(this, '04:00 PM')">04:00 PM</button>
+        </div>
     </div>
 
     <!-- RIGHT COLUMN (TABLET/DESKTOP) -->
@@ -364,16 +374,6 @@
                 <button type="button" onclick="changeMonth(1)">&gt;</button>
             </div>
             <div class="cal-grid" id="calGrid"></div>
-        </div>
-
-        <label>AVAILABLE TIME SLOTS</label>
-        <div class="grid-slots" id="slotsContainer">
-            <button type="button" class="slot-btn" onclick="selectSlot(this, '09:00 AM')">09:00 AM</button>
-            <button type="button" class="slot-btn" onclick="selectSlot(this, '10:00 AM')">10:00 AM</button>
-            <button type="button" class="slot-btn" onclick="selectSlot(this, '11:00 AM')">11:00 AM</button>
-            <button type="button" class="slot-btn" onclick="selectSlot(this, '02:00 PM')">02:00 PM</button>
-            <button type="button" class="slot-btn" onclick="selectSlot(this, '03:00 PM')">03:00 PM</button>
-            <button type="button" class="slot-btn" onclick="selectSlot(this, '04:00 PM')">04:00 PM</button>
         </div>
     </div>
 
