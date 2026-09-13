@@ -46,7 +46,7 @@
             flex-direction: column;
         }
 
-        /* IDEA 1: THE BLOCK LEDGER / STENCIL BOX STYLE WITH ROUNDED EDGES */
+        /* HEADER BRANDING WITH RETRO STYLE ICON */
         h1 {
             font-size: 22px;
             font-weight: 700;
@@ -59,6 +59,28 @@
             background: #ffffff;
             padding: 12px;
             grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 2px solid #000000;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: inline-block;
+            vertical-align: middle;
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        .brand-icon svg {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         label { 
@@ -116,7 +138,7 @@
             font-size: 14px; 
         }
 
-        /* MOBILE PHONES (Up to 480px) - UNTOUCHED / ORIGINAL BEHAVIOR */
+        /* MOBILE PHONES (Up to 480px) */
         @media screen and (max-width: 480px) {
             input {
                 font-size: 16px; 
@@ -136,7 +158,7 @@
             }
         }
 
-        /* TABLETS & DESKTOPS (481px and above) - MULTI-COLUMN NO-SCROLL LAYOUT */
+        /* TABLETS & DESKTOPS (481px and above) */
         @media screen and (min-width: 481px) {
             body {
                 padding: 20px;
@@ -336,7 +358,16 @@
 <body>
 
 <div class="booking-container">
-    <h1>MEN'S CORNER</h1>
+    <h1>
+        <span class="brand-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <rect width="100" height="100" fill="#f5b041"/>
+                <path d="M0 80 A100 100 0 0 1 80 0 L100 0 L100 100 L0 100 Z" fill="#161616"/>
+                <text x="50" y="72" font-family="'Space Mono', monospace" font-weight="700" font-size="55" fill="#f5b041" text-anchor="middle">M</text>
+            </svg>
+        </span>
+        MEN'S CORNER
+    </h1>
 
     <!-- LEFT COLUMN (TABLET/DESKTOP) -->
     <div class="col-left">
